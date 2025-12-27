@@ -157,7 +157,7 @@
             background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
         }
 
-        .charlie brown-container {
+        .charlie-brown-container {
             text-align: center;
             background: white;
             padding: 40px;
@@ -167,7 +167,7 @@
             width: 100%;
         }
 
-        .charlie brown-character {
+        .charlie-brown-character {
             width: 250px;
             height: 250px;
             margin: 20px auto;
@@ -178,14 +178,14 @@
             animation: bounce 2s ease-in-out infinite;
         }
 
-        .charlie brown-character img {
+        .charlie-brown-character img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             pointer-events: none;
         }
 
-        .charlie brown-character:active {
+        .charlie-brown-character:active {
             transform: scale(0.95);
         }
 
@@ -605,9 +605,9 @@
         }
 
         @media (max-width: 768px) {
-            .charlie brown-container,
+            .charlie-brown-container,
             .snoopy-container,
-            .snoopy-container,
+            .cooking-container,
             .linus-container {
                 padding: 30px 20px;
             }
@@ -616,7 +616,7 @@
                 font-size: 28px;
             }
 
-            .charlie brown-character {
+            .charlie-brown-character {
                 width: 200px;
                 height: 200px;
             }
@@ -648,10 +648,10 @@
 
     <!-- Page 1: Tap charlie brown -->
     <div class="page page1" id="page1">
-        <div class="Charlie Brown-container">
+        <div class="charlie-brown-container">
             <h1>🖤 Tap Charlie Brown! </h1>
             <p class="instruction">Tap Charlie Brown 10 times to reveal it!</p>
-            <div class="Charlie Brown-character" id="Charlie Brown" onclick="tapCharlieBrown (event)">
+            <div class="charlie-brown-character" id="charliebrown" onclick="tapCharlieBrown(event)">
                 <img src="https://i.ibb.co/Nkp0fV7/Charlie-Brown-smiling-1.png" alt="Charlie brown">
             </div>
             <div class="tap-counter" id="tapCounter">Taps: 0/10</div>
@@ -669,7 +669,7 @@
 
     <!-- Page 2: Help snoopy -->
     <div class="page page2" id="page2">
-        <div class="pochacco-container">
+        <div class="snoopy-container">
             <h1>💙 Help Snoopy! 💙</h1>
             <p class="instruction">Collect all 6 bones to help Snoopy!</p>
             <img src="https://i.ibb.co/Qth4rQf/Snoopy-Peanuts.png" alt="Snoopy" class="character-img">
@@ -1004,8 +1004,8 @@
             
             // Add touch support for charliebrown
             const charliebrown = document.getElementById('charliebrown');
-            if (kuromi) {
-                charliebrown.log('charliebrown element found, adding touch support');
+            if (charliebrown) {
+                console.log('charliebrown element found, adding touch support');
                 charliebrown.addEventListener('touchstart', function(e) {
                     e.preventDefault();
                     tapCharlieBrown(e);
