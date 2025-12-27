@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Open Me 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            overflow: hidden;
+            background: #000;
+            touch-action: manipulation;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* Gift Box Container */
+        .gift-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            z-index: 1000;
+            transition: all 0.8s;
+        }
+
+        .gift-container.hidden {
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+        }
+
+        .gift-box {
+            position: relative;
+            cursor: pointer;
+            animation: float 3s ease-in-out infinite;
+            user-select: none;
+        }
+
+        .gift-box:hover .box-top {
+            transform: translateY(-20px) rotate(-5deg);
+        }
+
+        .box-top {
+            width: 200px;
+            height: 80px;
+            background: #ffb3d9;
+            border: 4px solid #ff69b4;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .ribbon {
+            width: 40px;
+            height: 100%;
+            background: #ff1493;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .bow {
+            width: 80px;
+            height: 40px;
+            background: #ff1493;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+        }
+
+        .bow::before,
+        .bow::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            background: #ff1493;
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .bow::before { left: -30px; }
+        .bow::after { right: -30px; }
+
+        .box-bottom {
+            width: 200px;
+            height: 150px;
+            background: #ff1493;
+            border: 4px solid #c71585;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .open-text {
+            color: white;
+            font-size: 32px;
+            margin-top: 40px;
+            text-align: center;
+            animation: pulse 2s infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            user-select: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        /* Pages */
+        .page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .page.active {
+            display: flex !important;
+            opacity: 1;
+            animation: fadeIn 0.8s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Page 1: Kuromi Tapping */
+        .page1 {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+
+        .kuromi-container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .kuromi-character {
+            width: 250px;
+            height: 250px;
+            margin: 20px auto;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.1s;
+            user-select: none;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .kuromi-character img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .kuromi-character:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .tap-counter {
+            font-size: 28px;
+            color: #9b59b6;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .story-text {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+            margin: 20px 0;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s, max-height 0.5s;
+        }
+
+        .story-text.show {
+            opacity: 1;
+            max-height: 1000px;
+        }
+
+        /* Page 2: Pochacco Helper */
+        .page2 {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .pochacco-container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .bones-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .bone {
+            width: 100%;
+            height: 80px;
+            background: #fff4e6;
+            border: 3px solid #3498db;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .bone:hover {
+            transform: scale(1.05);
+            background: #fffaf0;
+        }
+
+        .bone.collected {
+            background: #3498db;
+            transform: scale(0.8);
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        /* Page 3: Pompompurin Cooking */
+        .page3 {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .cooking-container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .ingredients-area {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .ingredient {
+            width: 100px;
+            height: 100px;
+            background: #fff8dc;
+            border: 3px solid #f39c12;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .ingredient:hover {
+            transform: scale(1.05);
+            background: #fffaed;
+        }
+
+        .ingredient:active {
+            transform: scale(0.9) rotate(10deg);
+        }
+
+        .ingredient.added {
+            opacity: 0.3;
+            transform: scale(0.7);
+            cursor: default;
+        }
+
+        .pot {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffeaa7 100%);
+            border: 5px solid #e67e22;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pot::after {
+            content: '✨';
+            position: absolute;
+            font-size: 30px;
+            animation: sparkle 1s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Page 4: My Melody Night to Day */
+        .page4 {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            transition: background 2s ease;
+        }
+
+        .page4.day {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+        }
+
+        .melody-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .sky {
+            width: 100%;
+            height: 200px;
+            background: #1e3c72;
+            border-radius: 20px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            transition: background 2s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .sky.day {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .moon {
+            width: 80px;
+            height: 80px;
+            background: #f0e68c;
+            border-radius: 50%;
+            position: absolute;
+            top: 30px;
+            right: 50px;
+            box-shadow: 0 0 30px #f0e68c;
+            transition: all 2s ease;
+        }
+
+        .sun {
+            width: 100px;
+            height: 100px;
+            background: #ffeb3b;
+            border-radius: 50%;
+            position: absolute;
+            top: 50px;
+            left: -150px;
+            box-shadow: 0 0 50px #ffeb3b;
+            transition: all 2s ease;
+        }
+
+        .sun.rise {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: opacity 2s ease;
+        }
+
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        .clouds.show {
+            opacity: 1;
+        }
+
+        .cloud {
+            position: absolute;
+            width: 100px;
+            height: 40px;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.8;
+        }
+
+        .final-message {
+            font-size: 48px;
+            background: linear-gradient(45deg, #ff6b9d, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            margin: 30px 0;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .final-message.show {
+            opacity: 1;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.8)); }
+        }
+
+        .instruction {
+            font-size: 20px;
+            color: #888;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #555;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .next-btn.show {
+            display: inline-block;
+            animation: bounceIn 0.5s;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+
+        .next-btn:active {
+            transform: translateY(0);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .photo-container {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #666;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hearts-float {
+            position: fixed;
+            pointer-events: none;
+            font-size: 30px;
+            animation: floatUp 3s ease-out;
+            z-index: 9999;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(0);
+            }
+            50% {
+                transform: translateY(-100px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-200px) scale(0.5);
+            }
+        }
+
+        .character-img {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            object-fit: contain;
+            animation: floatAndWiggle 3s ease-in-out infinite;
+        }
+
+        @keyframes floatAndWiggle {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg); 
+            }
+            25% { 
+                transform: translateY(-10px) rotate(-3deg); 
+            }
+            50% { 
+                transform: translateY(-5px) rotate(3deg); 
+            }
+            75% { 
+                transform: translateY(-12px) rotate(-2deg); 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .kuromi-container,
+            .pochacco-container,
+            .cooking-container,
+            .melody-container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .kuromi-character {
+                width: 200px;
+                height: 200px;
+            }
+
+            .final-message {
+                font-size: 36px;
+            }
+
+            .ingredient {
+                width: 80px;
+                height: 80px;
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Gift Box Opening Screen -->
+    <div class="gift-container" id="giftContainer">
+        <div class="gift-box" onclick="openGift()">
+            <div class="box-top">
+                <div class="ribbon"></div>
+                <div class="bow"></div>
+            </div>
+            <div class="box-bottom"></div>
+        </div>
+        <div class="open-text">Tap to Open 💝</div>
+    </div>
+
+    <!-- Page 1: Tap Kuromi -->
+    <div class="page page1" id="page1">
+        <div class="kuromi-container">
+            <h1>🖤 Tap Kuromi! 🖤</h1>
+            <p class="instruction">Tap Kuromi 10 times to reveal how we met!</p>
+            <div class="kuromi-character" id="kuromi" onclick="tapKuromi(event)">
+                <img src="https://i.ibb.co/twY0Rnkx/download.png" alt="Kuromi">
+            </div>
+            <div class="tap-counter" id="tapCounter">Taps: 0/10</div>
+            <div class="story-text" id="story1">
+                <div class="photo-container">
+                    <div class="photo-placeholder">
+                        <img src="https://i.ibb.co/kg1KpGjt/Screenshot-2025-11-01-at-12-57-18-PM.png" alt="Our Memory" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                <p>From the first moment we talk at discord, i was already charmed by voice, but as times goes by i fell in love who u truly are 💜</p>
+            </div>
+            <button class="next-btn" id="next1" onclick="nextPage(2)">Continue →</button>
+        </div>
+    </div>
+
+    <!-- Page 2: Help Pochacco -->
+    <div class="page page2" id="page2">
+        <div class="pochacco-container">
+            <h1>💙 Help Pochacco! 💙</h1>
+            <p class="instruction">Collect all 6 bones to help Pochacco!</p>
+            <img src="https://i.ibb.co/Q7GrmDyS/download.png" alt="Pochacco" class="character-img">
+            <div class="bones-grid" id="bonesGrid"></div>
+            <div class="tap-counter" id="boneCounter">Bones: 0/6</div>
+            <div class="story-text" id="story2">
+                <div class="photo-container">
+                    <div class="photo-placeholder">
+                        <img src="" alt="Our Memory" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                <p>just like helping Pochacco, you've helped me grow. Every conversation with you makes me better, happier, more complete. You bring out the best in me lagi  🌟</p>
+            </div>
+            <button class="next-btn" id="next2" onclick="nextPage(3)">Continue →</button>
+        </div>
+    </div>
+
+    <!-- Page 3: Cook with Pompompurin -->
+    <div class="page page3" id="page3">
+        <div class="cooking-container">
+            <h1>💛 Cook with Pompompurin! 💛</h1>
+            <p class="instruction">Add all ingredients to the pot!</p>
+            <img src="https://i.ibb.co/k2nMvCpj/download.png" alt="Pompompurin" class="character-img" style="width: 200px; height: 200px;">
+            <div class="pot" id="pot">🍳</div>
+            <div class="ingredients-area" id="ingredientsArea"></div>
+            <div class="tap-counter" id="cookCounter">Ingredients: 0/5</div>
+            <div class="story-text" id="story3">
+                <div class="photo-container">
+                    <div class="photo-placeholder">
+                        <img src="" alt="Our Memory" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                <p>together, we create something beautiful like how Pompompurin mixed things, you mixed my lonely nights with laughter and joy which makes everything sweeter 🌸</p>
+            </div>
+            <button class="next-btn" id="next3" onclick="nextPage(4)">Continue →</button>
+        </div>
+    </div>
+
+    <!-- Page 4: My Melody Night to Day -->
+    <div class="page page4" id="page4">
+        <div class="melody-container">
+            <h1>🩷 Bring the Sunrise for My Melody! 🩷</h1>
+            <p class="instruction">Tap the sky to turn night into day!</p>
+            <div class="sky" id="sky" onclick="turnToDay()">
+                <div class="stars" id="stars"></div>
+                <div class="moon" id="moon"></div>
+                <div class="sun" id="sun"></div>
+                <div class="clouds" id="clouds"></div>
+            </div>
+            <img src="https://i.ibb.co/B5YxKjn1/download.jpg" alt="My Melody" class="character-img">
+            <div class="story-text show">
+                <div class="photo-container">
+                    <div class="photo-placeholder">
+                        <img src="" alt="Our Memory" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                <p>you bring light into my life, turning my darkest nights into the brightest days. with you, everything feels possible and right. 🌅</p>
+            </div>
+            <div class="final-message" id="finalMessage">
+                I love you so much diamond 💕
+            </div>
+            <p style="font-size: 18px; color: #888; font-style: italic; margin-top: 20px;"> I'm grateful for you. 🌸✨</p>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 0;
+        let tapCount = 0;
+        let bonesCollected = 0;
+        let ingredientsAdded = 0;
+        let dayRevealed = false;
+
+        console.log('Script loaded successfully');
+
+        function openGift() {
+            console.log('Opening gift...');
+            const container = document.getElementById('giftContainer');
+            container.classList.add('hidden');
+            setTimeout(() => {
+                container.style.display = 'none';
+                showPage(1);
+            }, 800);
+        }
+
+        function showPage(pageNum) {
+            console.log('Showing page:', pageNum);
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => {
+                p.classList.remove('active');
+                p.style.display = 'none';
+            });
+            
+            const targetPage = document.getElementById(`page${pageNum}`);
+            if (targetPage) {
+                targetPage.style.display = 'flex';
+                setTimeout(() => {
+                    targetPage.classList.add('active');
+                }, 10);
+                currentPage = pageNum;
+
+                if (pageNum === 2) initPochacco();
+                if (pageNum === 3) initCooking();
+                if (pageNum === 4) initMelody();
+            } else {
+                console.error('Page not found:', pageNum);
+            }
+        }
+
+        function nextPage(pageNum) {
+            console.log('Next page:', pageNum);
+            showPage(pageNum);
+        }
+
+        // Page 1: Kuromi Tapping
+        function tapKuromi(event) {
+            if (tapCount >= 10) return;
+            
+            tapCount++;
+            const counter = document.getElementById('tapCounter');
+            if (counter) counter.textContent = `Taps: ${tapCount}/10`;
+            
+            const kuromi = document.getElementById('kuromi');
+            if (kuromi) {
+                kuromi.style.transform = `scale(${0.95 + Math.random() * 0.1}) rotate(${Math.random() * 20 - 10}deg)`;
+                setTimeout(() => {
+                    kuromi.style.transform = '';
+                }, 100);
+            }
+
+            // Create floating heart
+            let x, y;
+            if (event.clientX) {
+                x = event.clientX;
+                y = event.clientY;
+            } else if (event.touches && event.touches[0]) {
+                x = event.touches[0].clientX;
+                y = event.touches[0].clientY;
+            } else {
+                x = window.innerWidth / 2;
+                y = window.innerHeight / 2;
+            }
+            createFloatingHeart(x, y);
+
+            if (tapCount === 10) {
+                setTimeout(() => {
+                    const story = document.getElementById('story1');
+                    if (story) story.classList.add('show');
+                    setTimeout(() => {
+                        const btn = document.getElementById('next1');
+                        if (btn) btn.classList.add('show');
+                    }, 300);
+                }, 500);
+            }
+        }
+
+        // Page 2: Pochacco Bones
+        function initPochacco() {
+            console.log('Initializing Pochacco page');
+            const grid = document.getElementById('bonesGrid');
+            if (!grid) {
+                console.error('Bones grid not found');
+                return;
+            }
+            
+            grid.innerHTML = '';
+            bonesCollected = 0;
+            const counter = document.getElementById('boneCounter');
+            if (counter) counter.textContent = 'Bones: 0/6';
+            
+            for (let i = 0; i < 6; i++) {
+                const bone = document.createElement('div');
+                bone.className = 'bone';
+                bone.textContent = '🦴';
+                bone.onclick = function() {
+                    if (!this.classList.contains('collected')) {
+                        this.classList.add('collected');
+                        bonesCollected++;
+                        console.log('Bones collected:', bonesCollected);
+                        if (counter) counter.textContent = `Bones: ${bonesCollected}/6`;
+                        
+                        if (bonesCollected === 6) {
+                            setTimeout(() => {
+                                const story = document.getElementById('story2');
+                                if (story) story.classList.add('show');
+                                setTimeout(() => {
+                                    const btn = document.getElementById('next2');
+                                    if (btn) btn.classList.add('show');
+                                }, 300);
+                            }, 500);
+                        }
+                    }
+                };
+                grid.appendChild(bone);
+            }
+            console.log('Pochacco initialized with 6 bones');
+        }
+
+        // Page 3: Cooking
+        function initCooking() {
+            console.log('Initializing Cooking page');
+            const ingredientsArea = document.getElementById('ingredientsArea');
+            if (!ingredientsArea) {
+                console.error('Ingredients area not found');
+                return;
+            }
+            
+            ingredientsArea.innerHTML = '';
+            ingredientsAdded = 0;
+            const counter = document.getElementById('cookCounter');
+            if (counter) counter.textContent = 'Ingredients: 0/5';
+            
+            const ingredients = ['🥚', '🧈', '🥛', '🍓', '🍯'];
+            
+            ingredients.forEach(emoji => {
+                const ingredient = document.createElement('div');
+                ingredient.className = 'ingredient';
+                ingredient.textContent = emoji;
+                ingredient.onclick = function() {
+                    if (!this.classList.contains('added')) {
+                        this.classList.add('added');
+                        ingredientsAdded++;
+                        console.log('Ingredients added:', ingredientsAdded);
+                        if (counter) counter.textContent = `Ingredients: ${ingredientsAdded}/5`;
+                        
+                        if (ingredientsAdded === 5) {
+                            setTimeout(() => {
+                                const story = document.getElementById('story3');
+                                if (story) story.classList.add('show');
+                                setTimeout(() => {
+                                    const btn = document.getElementById('next3');
+                                    if (btn) btn.classList.add('show');
+                                }, 300);
+                            }, 500);
+                        }
+                    }
+                };
+                ingredientsArea.appendChild(ingredient);
+            });
+            console.log('Cooking initialized with 5 ingredients');
+        }
+
+        // Page 4: My Melody Night to Day
+        function initMelody() {
+            console.log('Initializing Melody page');
+            const stars = document.getElementById('stars');
+            if (!stars) {
+                console.error('Stars container not found');
+                return;
+            }
+            
+            stars.innerHTML = '';
+            
+            for (let i = 0; i < 30; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                stars.appendChild(star);
+            }
+
+            const clouds = document.getElementById('clouds');
+            if (clouds) {
+                clouds.innerHTML = '';
+                for (let i = 0; i < 3; i++) {
+                    const cloud = document.createElement('div');
+                    cloud.className = 'cloud';
+                    cloud.style.left = (Math.random() * 70) + '%';
+                    cloud.style.top = (Math.random() * 60) + '%';
+                    clouds.appendChild(cloud);
+                }
+            }
+            console.log('Melody initialized');
+        }
+
+        function turnToDay() {
+            console.log('Turning night to day...');
+            if (dayRevealed) {
+                console.log('Already revealed');
+                return;
+            }
+            
+            dayRevealed = true;
+            const page4 = document.getElementById('page4');
+            const sky = document.getElementById('sky');
+            const sun = document.getElementById('sun');
+            const moon = document.getElementById('moon');
+            const stars = document.getElementById('stars');
+            const clouds = document.getElementById('clouds');
+            const finalMessage = document.getElementById('finalMessage');
+            
+            if (page4) page4.classList.add('day');
+            if (sky) sky.classList.add('day');
+            if (sun) sun.classList.add('rise');
+            if (moon) moon.style.opacity = '0';
+            if (stars) stars.style.opacity = '0';
+            if (clouds) clouds.classList.add('show');
+            
+            setTimeout(() => {
+                if (finalMessage) {
+                    finalMessage.classList.add('show');
+                    console.log('Final message revealed');
+                }
+            }, 2000);
+        }
+
+        function createFloatingHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'hearts-float';
+            heart.textContent = '💗';
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                if (heart && heart.parentNode) {
+                    heart.parentNode.removeChild(heart);
+                }
+            }, 3000);
+        }
+
+        // Prevent scrolling on body when pages are active
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            document.body.style.overflow = 'hidden';
+            
+            // Verify all pages exist
+            for (let i = 1; i <= 4; i++) {
+                const page = document.getElementById(`page${i}`);
+                console.log(`Page ${i}:`, page ? 'Found' : 'NOT FOUND');
+            }
+            
+            // Add touch support for Kuromi
+            const kuromi = document.getElementById('kuromi');
+            if (kuromi) {
+                console.log('Kuromi element found, adding touch support');
+                kuromi.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    tapKuromi(e);
+                }, { passive: false });
+            } else {
+                console.error('Kuromi element not found');
+            }
+            
+            // Add touch support for sky
+            const sky = document.getElementById('sky');
+            if (sky) {
+                console.log('Sky element found, adding touch support');
+                sky.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    turnToDay();
+                }, { passive: false });
+            }
+            
+            // Add touch support for gift box
+            const giftBox = document.querySelector('.gift-box');
+            if (giftBox) {
+                giftBox.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    openGift();
+                }, { passive: false });
+            }
+        });
+    </script>
+</body>
+</html>
