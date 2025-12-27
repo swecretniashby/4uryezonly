@@ -139,6 +139,7 @@
             transition: opacity 0.5s;
             overflow-y: auto;
             overflow-x: hidden;
+            flex-direction: column;
         }
 
         .page.active {
@@ -160,11 +161,12 @@
         .charlie-brown-container {
             text-align: center;
             background: white;
-            padding: 40px;
+            padding: 30px 20px;
             border-radius: 30px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 600px;
             width: 100%;
+            margin: 0 auto;
         }
 
         .charlie-brown-character {
@@ -202,19 +204,20 @@
         }
 
         .story-text {
-            font-size: 18px;
+            font-size: 16px;
             color: #555;
             line-height: 1.6;
-            margin: 20px 0;
+            margin: 15px 0;
             opacity: 0;
             max-height: 0;
             overflow: hidden;
             transition: opacity 0.5s, max-height 0.5s;
+            text-align: left;
         }
 
         .story-text.show {
             opacity: 1;
-            max-height: 1000px;
+            max-height: 2000px;
         }
 
         /* Page 2: Snoopy Helper */
@@ -225,11 +228,12 @@
         .snoopy-container {
             text-align: center;
             background: white;
-            padding: 40px;
+            padding: 30px 20px;
             border-radius: 30px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 600px;
             width: 100%;
+            margin: 0 auto;
         }
 
         .snoopy-grid {
@@ -274,11 +278,12 @@
         .cooking-container {
             text-align: center;
             background: white;
-            padding: 40px;
+            padding: 30px 20px;
             border-radius: 30px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 600px;
             width: 100%;
+            margin: 0 auto;
         }
 
         .ingredients-area {
@@ -357,22 +362,24 @@
             background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
         }
 
-        .linus-container {
+        .linus-container,
+        .melody-container {
             text-align: center;
             background: rgba(255, 255, 255, 0.95);
-            padding: 50px 30px;
+            padding: 40px 20px;
             border-radius: 30px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 700px;
             width: 100%;
+            margin: 0 auto;
         }
 
         .sky {
             width: 100%;
-            height: 200px;
+            height: 180px;
             background: #1e3c72;
             border-radius: 20px;
-            margin: 20px 0;
+            margin: 15px 0;
             position: relative;
             overflow: hidden;
             transition: background 2s ease;
@@ -456,15 +463,17 @@
         }
 
         .final-message {
-            font-size: 48px;
+            font-size: 28px;
             background: linear-gradient(45deg, #ff6b9d, #feca57);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             font-weight: bold;
-            margin: 30px 0;
+            margin: 20px 0;
             opacity: 0;
             transition: opacity 1s ease;
+            word-wrap: break-word;
+            line-height: 1.4;
         }
 
         .final-message.show {
@@ -478,21 +487,23 @@
         }
 
         .instruction {
-            font-size: 20px;
+            font-size: 16px;
             color: #888;
-            margin: 20px 0;
+            margin: 12px 0;
             font-style: italic;
+            word-wrap: break-word;
         }
 
         h1 {
             color: #333;
-            font-size: 36px;
-            margin-bottom: 20px;
+            font-size: 28px;
+            margin-bottom: 15px;
+            word-wrap: break-word;
         }
 
         h2 {
             color: #555;
-            font-size: 28px;
+            font-size: 24px;
             margin-bottom: 15px;
         }
 
@@ -500,11 +511,11 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 20px;
+            padding: 12px 35px;
+            font-size: 16px;
             border-radius: 30px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 15px;
             display: none;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             transition: transform 0.2s;
@@ -533,8 +544,8 @@
         .photo-container {
             width: 100%;
             max-width: 400px;
-            height: 300px;
-            margin: 20px auto;
+            height: 280px;
+            margin: 15px auto;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -605,30 +616,128 @@
         }
 
         @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+                margin-bottom: 12px;
+            }
+
             .charlie-brown-container,
             .snoopy-container,
             .cooking-container,
-            .linus-container {
-                padding: 30px 20px;
-            }
-
-            h1 {
-                font-size: 28px;
+            .linus-container,
+            .melody-container {
+                padding: 20px 15px;
+                border-radius: 20px;
             }
 
             .charlie-brown-character {
-                width: 200px;
-                height: 200px;
+                width: 180px;
+                height: 180px;
             }
 
             .final-message {
-                font-size: 36px;
+                font-size: 22px;
             }
 
             .ingredient {
-                width: 80px;
-                height: 80px;
-                font-size: 40px;
+                width: 70px;
+                height: 70px;
+                font-size: 35px;
+            }
+
+            .photo-container {
+                max-width: 350px;
+                height: 250px;
+            }
+
+            .sky {
+                height: 150px;
+            }
+
+            .character-img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .instruction {
+                font-size: 16px;
+            }
+
+            .tap-counter {
+                font-size: 20px;
+            }
+
+            .next-btn {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+
+            .charlie-brown-container,
+            .snoopy-container,
+            .cooking-container,
+            .linus-container,
+            .melody-container {
+                padding: 15px 12px;
+                border-radius: 15px;
+            }
+
+            .charlie-brown-character {
+                width: 150px;
+                height: 150px;
+            }
+
+            .final-message {
+                font-size: 18px;
+            }
+
+            .ingredient {
+                width: 60px;
+                height: 60px;
+                font-size: 30px;
+            }
+
+            .photo-container {
+                max-width: 100%;
+                height: 200px;
+            }
+
+            .sky {
+                height: 120px;
+            }
+
+            .character-img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .instruction {
+                font-size: 14px;
+            }
+
+            .tap-counter {
+                font-size: 18px;
+            }
+
+            .next-btn {
+                padding: 10px 25px;
+                font-size: 14px;
+            }
+
+            .story-text {
+                font-size: 14px;
+            }
+
+            .pot {
+                width: 150px;
+                height: 150px;
+                font-size: 50px;
             }
         }
     </style>
@@ -731,7 +840,7 @@
             <div class="final-message" id="finalMessage">
                 MAY I COURT YOU MISS CHEFF KITKAT! 💕
             </div>
-            <p style="font-size: 18px; color: #888; font-style: italic; margin-top: 20px;"> I'm grateful for you. 🌸✨</p>
+            <p style="font-size: 14px; color: #888; font-style: italic; margin-top: 15px;"> I'm grateful for you. 🌸✨</p>
         </div>
     </div>
 
