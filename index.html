@@ -206,18 +206,24 @@
         .story-text {
             font-size: 16px;
             color: #555;
-            line-height: 1.6;
+            line-height: 1.8;
             margin: 15px 0;
             opacity: 0;
             max-height: 0;
             overflow: hidden;
             transition: opacity 0.5s, max-height 0.5s;
-            text-align: left;
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         .story-text.show {
             opacity: 1;
             max-height: 2000px;
+        }
+
+        .story-text p {
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         /* Page 2: Snoopy Helper */
@@ -600,6 +606,53 @@
             animation: floatAndWiggle 3s ease-in-out infinite;
         }
 
+        .music-player {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 15px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .music-player audio {
+            width: 180px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .music-label {
+            font-size: 12px;
+            color: #888;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        @media (max-width: 480px) {
+            .music-player {
+                top: 15px;
+                right: 15px;
+                padding: 10px 12px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .music-player audio {
+                width: 150px;
+                height: 28px;
+            }
+
+            .music-label {
+                font-size: 10px;
+            }
+        }
+
         @keyframes floatAndWiggle {
             0%, 100% { 
                 transform: translateY(0) rotate(0deg); 
@@ -753,6 +806,15 @@
             <div class="box-bottom"></div>
         </div>
         <div class="open-text">Tap to Open 💝</div>
+    </div>
+
+    <!-- Music Player -->
+    <div class="music-player" id="musicPlayer">
+        <span class="music-label">🎵</span>
+        <audio id="bgMusic" controls loop>
+            <source src="YOUR_MUSIC_URL_HERE" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
     </div>
 
     <!-- Page 1: Tap charlie brown -->
