@@ -762,8 +762,8 @@
     </div>
 
     <!-- BACKGROUND MUSIC -->
-    <audio id="bgMusic" loop preload="auto" style="display: none;">
-        <source src="https://archive.org/download/ytdown.com-you-tube-eraserheads-with-a-smile-lyrics-media-jj-ra-rl-5ua-qk-001-1080p/ytdown.com-you-tube-eraserheads-with-a-smile-lyrics-media-jj-ra-rl-5ua-qk-001-1080p.mp3" type="audio/mpeg">
+    <audio id="bgMusic" loop style="display: none;">
+        <source src="https://media.vocaroo.com/p/1gTXGrIdRfW6.mp3" type="audio/mpeg">
     </audio>
 
 
@@ -875,13 +875,7 @@
             // Play music
             if (bgMusic) {
                 bgMusic.volume = 0.5;
-                bgMusic.play().catch(err => {
-                    console.log('Music play attempt:', err);
-                    // Retry on user interaction
-                    setTimeout(() => {
-                        bgMusic.play().catch(e => console.log('Music error:', e));
-                    }, 500);
-                });
+                bgMusic.play().catch(err => console.log('Music error:', err));
             }
             
             setTimeout(() => {
